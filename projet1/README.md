@@ -1,10 +1,13 @@
-## Everything works execpt the database !!!
-
 ## To run the projet1
 ```
 composer install
 cd docker
 docker-compose up -d
+```
+
+Acces the web site here
+```
+http://localhost:8080/web/app_dev.php/animal/list
 ```
 
 ## INSTALLATION AVEC COMPOSER
