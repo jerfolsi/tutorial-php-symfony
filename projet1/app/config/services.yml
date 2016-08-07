@@ -1,0 +1,101 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+  #------------------------------------------------------------------
+  #    service_name:
+  #        class: AppBundle\Directory\ClassName
+  #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+  #------------------------------------------------------------------
+  #ici on créer un service "guardFormAuthenticator" qui va nous permettre
+  #de gérer la connexion des users
+  #on lui passe 2 services en parametres : @route qui est un service natif
+  #et @userLogger qui est un service custom fait pour écrire des logs
+  app.security.guardFormAuthenticator:
+    class: AppBundle\Security\FormAuthenticator
+    arguments: ['@router', '@app.logger.userlogger']
+
+
+  #------------------------------------------------------------------
+  app.security.userLastAuthenticated:
+    class: AppBundle\Security\UserLastAuthenticated
+    arguments: ['@doctrine.orm.entity_manager']
+    tags:
+      -
+        name: kernel.event_listener
+        event: security.authentication.success
+        method: authenticationSuccess
+
+
+  #------------------------------------------------------------------
+  #création d'un service 'userlogger' qui sera appelé à différents endroits
+  #du projet afin d'ecrire un message dans le repertoire /var/logs/dev.log
+  #attention : cet exemple est vraiment à titre indicatif car au final ce service
+  #ne fait qu'appeler un service déjà existant (@logger)
+  #@logger est un service natif qu'on envoi en parametre
+  app.logger.userlogger:
+    class: AppBundle\Logger\UserLogger
+    arguments: ['@logger']
+
+
+  #------------------------------------------------------------------
+  #Creation d'un service qui sera utilisé dans les twig pour faire du uppercase
+  #bon normalement pour une fonctionnalité si faible, on ferait plutot un filtre
+  #mais c'est à titre d'exemple
+  app.htmlservice.uppercase:
+    class: AppBundle\HtmlService\UpperCase
+
+
+  #------------------------------------------------------------------
+  app.twig_extension:
+    class: AppBundle\Twig\AppExtension
+    public: false
+    tags:
+      - { name: twig.extension }
+
+
+ #------------------------------------------------------------------
+  app.form.extension.type.role:
+    class: AppBundle\Form\Extensions\RoleTypeExtension
+    arguments: ['@security.authorization_checker']
+    tags:
+      -
+        name: form.type_extension
+        extended_type: Symfony\Component\Form\Extension\Core\Type\FormType
+
+ #------------------------------------------------------------------
+ # Service to handle our basket
+ # -- it require a dependency to the @session service
+  app.shop.basket:
+    class: AppBundle\Shop\Basket
+    arguments: ['@session']
+
+ #------------------------------------------------------------------
+ # creation d'un service de type 'event_listener'
+ # il faudra définir la liste des events écoutés directement dans le 'TAG'
+  app.mailservice:
+    class: AppBundle\MailService\MailService
+    tags:
+      -
+        name: kernel.event_listener
+        event: 'new_contact_msg'
+        method: 'onNewContactMsg'
+      -
+        name: kernel.event_listener
+        event: 'new_contact_msg2'
+        method: 'onNewContactMsg2'
+
+
+ #------------------------------------------------------------------
+ # creation d'un service de type 'event_subscriber'
+ # il faudra définir la liste des events écoutés directement dans la classe
+  app.mailservice2:
+    class: AppBundle\MailService\MailService2
+    service:
+    tags:
+      -
+        name: kernel.event_subscriber
+

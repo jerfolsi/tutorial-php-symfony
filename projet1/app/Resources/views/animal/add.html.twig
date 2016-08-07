@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Animal List{% endblock %}
+
+{% block body %}
+    <h1>Add an new Animal</h1>
+
+    {{ form_start(myform) }}
+
+    <div>
+        <span class="label">{{ form_label(myform.name) }}</span>
+        <span class="error">{{ form_errors(myform.name) }}</span>
+        {{ form_widget(myform.name, {'attr':{'class':'myinput', 'placeholder':'enter a name'}}) }}
+    </div>
+
+    <div>
+        <span class="label">{{ form_label(myform.weight) }}</span>
+        <span class="error">{{ form_errors(myform.weight) }}</span>
+        {{ form_widget(myform.weight, {'attr':{'class':'myinput', 'placeholder':'enter a weight'}}) }}
+    </div>
+
+    <div>
+        {{ form_widget(myform.save, {'attr':{'class':'mysave'}}) }}
+    </div>
+
+    {{ form_end(myform) }}
+
+
+    <script>
+        $("#form_name").keypress(function() {
+            var errorMessage = "The name must start with an uppercase character and contain at least 2 characters";
+
+            //var $myRegExp = new RegExp(/ab+c/);
+            var myRegExp = new RegExp("^[A-Z][a-z]+$");
+            var s = $("#form_name").val();
+            console.log("regexp : " + s + " : " + myRegExp.test(s));
+
+            if(!myRegExp.test(s)){
+                $("#form_name").prev().html(errorMessage);
+            }else{
+                $("#form_name").prev().html("");
+            }
+        });
+    </script>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        span.label{
+            color:blue;
+        }
+        span.error{
+            color:red;
+        }
+
+        span.error > ul > li{
+            margin:0;
+            padding:0;
+            list-style-type:none;
+        }
+
+        span.error > ul
+        {
+            margin:0;
+            padding:0;
+        }
+
+        input.myinput{
+            height:40px;
+            width:200px;
+        }
+
+        button.mysave{
+            height:40px;
+            width:200px;
+        }
+    </style>
+{% endblock %}

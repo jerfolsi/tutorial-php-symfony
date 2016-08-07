@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Bird List{% endblock %}
+
+{% block body %}
+    <h2>Birds list</h2>
+    {%  for bird in birds %}
+        {{ bird.animal.name }} - {{ bird.wingLength }}
+    {% endfor %}
+
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+    </style>
+{% endblock %}

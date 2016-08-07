@@ -1,0 +1,46 @@
+# To get started with security, check out the documentation:
+# http://symfony.com/doc/current/book/security.html
+security:
+
+    # http://symfony.com/doc/current/book/security.html#where-do-users-come-from-user-providers
+    providers:
+        main:
+          entity:
+            class: AppBundle\Entity\User
+            property: login
+
+    firewalls:
+        # disables authentication for assets and the profiler, adapt it according to your needs
+        dev:
+            pattern: ^/(_(profiler|wdt)|css|images|js)/
+            security: false
+
+        main:
+            anonymous: ~
+            # activate different ways to authenticate
+
+            # http_basic: ~
+            # http://symfony.com/doc/current/book/security.html#a-configuring-how-your-users-will-authenticate
+
+            # form_login: ~
+            # http://symfony.com/doc/current/cookbook/security/form_login_setup.html
+
+            guard:
+              authenticators:
+                - app.security.guardFormAuthenticator
+
+            form_login:
+              login_path: loginUser
+              check_path: loginUser
+
+            logout:
+              path: logout
+
+    access_control:
+        # on dit que l'URL /usr/login n'est pas soumise au controle de loggin
+        - { path: ^/user/login$, roles : IS_AUTHENTICATED_ANONYMOUSLY }
+
+        # toutes les URLS du sites sont soumises à la connexion
+        #- { path: ^/, roles: ROLE_USER }
+
+        - { path: ^/animal/add$, roles: ROLE_USER}

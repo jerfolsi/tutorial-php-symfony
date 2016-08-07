@@ -1,0 +1,26 @@
+version: '2'
+services:
+
+  #container 'mysql'
+  mysql:
+    build: ./mysql
+    container_name: projet1-mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - '3316:3306'
+    volumes:
+      - db:/var/lib/mysql
+
+  #container 'apache > php'
+  php:
+    build: ./php
+    container_name: projet1-php
+    ports:
+      - '8080:80'
+    volumes:
+      - ./..:/var/www/html
+    depends_on:
+      - mysql
+volumes:
+  db:

@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Animal List{% endblock %}
+
+{% block body %}
+    <h1>Login</h1>
+
+    <form method="POST">
+
+        <label>Login :</label><input name="username" type="text"></input>
+        <label>Password :</label><input name="password" type="password"></input>
+        <button>Connexion</button>
+    </form>
+    {% if error %}
+        <div class="error">p{{ error }}</div>
+    {% endif %}
+    <script>
+    </script>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+        .error{
+            color:red;
+        }
+    </style>
+{% endblock %}

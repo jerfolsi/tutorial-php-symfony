@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Animal List{% endblock %}
+
+{% block body %}
+    <h1>Food Fiche</h1>
+    {{ food.id }} - {{ food.name }}
+
+    Cout total en bouffe : {{ totalCost }}
+
+    <br/>
+    <i>Attention : tarifs hors frais annexes</i>
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+    </style>
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Animal List{% endblock %}
+
+{% block body %}
+    <h1>{{ service_uppercase.render("My animal list") }}</h1>
+    <p>
+        Utilisation variable globale du config.yml : {{ ga_tracking }}
+    </p>
+
+    {{ '5500'|price }}
+
+    <table>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Weight</th>
+        </tr>
+        {% for animal in animals %}
+        <tr>
+            <td>{{ animal.id }}</td>
+            <td>{{ animal.name }}</td>
+            <td>{{ animal.weight }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    {% for animal in animals %}
+        {% include 'animal/item.html.twig' with {'animal' : animal} %}
+    {% endfor %}
+
+    <h2>Animals with a weight superior to 10</h2>
+    {% for animal in heaviestAnimals %}
+        {% include 'animal/item.html.twig' with {'animal' : animal} %}
+    {% endfor %}
+
+    <h2>Animals coming from France</h2>
+    {% for animal in animalsFromFrance %}
+        {% include 'animal/item.html.twig' with {'animal' : animal} %}
+    {% endfor %}
+
+{% endblock %}
+
+{% block stylesheets %}
+    <style>
+    </style>
+{% endblock %}

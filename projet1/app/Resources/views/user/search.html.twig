@@ -1,0 +1,79 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search User{% endblock %}
+
+{% block body %}
+    <h1>Search an User</h1>
+
+
+
+
+     <input id="autocomplete" type="text" placeholder="Enter an user name">
+
+    <div id="userselected"></div>
+
+    <script>
+    </script>
+
+
+    <script>
+         var data = [
+         { value: "AL", label: "Alabama" },
+         { value: "AK", label: "Alaska" },
+         { value: "AZ", label: "Arizona" },
+         { value: "AR", label: "Arkansas" },
+         { value: "CA", label: "California" }
+         ];
+
+         $(function () {
+
+              var getData = function (request, response) {
+                  console.log("getData");
+                   $.getJSON("http://localhost:8000/api/user/search/" + request.term,
+                           function (data) {
+                                response(data);
+                           });
+              };
+
+             var selectItem = function (event, ui) {
+                 console.log("select");
+                 $("#userselected").html('User selected : ' + ui.item.id);
+                 $("#autocomplete").val(ui.item.login);
+                 return false;
+             }
+
+             $("#autocomplete").autocomplete({
+                   source: getData,
+                   select: selectItem
+              })
+             .autocomplete( "instance" )._renderItem = function( ul, item ) {
+                 return $( "<li>" )
+                         .append( "<div>" + item.id + "<br>" + item.login + "</div>" )
+                         .appendTo( ul );
+             };
+
+
+         });
+
+
+
+
+
+
+
+
+
+
+
+
+    </script>
+
+
+
+
+
+
+{% endblock %}
+
+{% block stylesheets %}
+{% endblock %}
