@@ -1,5 +1,12 @@
 ## Everything works execpt the database
 
+## To run the projet1
+```
+composer install
+cd docker
+docker-compose up -d
+```
+
 ## INSTALLATION AVEC COMPOSER
 composer va uniquement mettre des fichiers dans vendor/
 ca suffira pas pour installer symfony. Il va falloir faire plus
